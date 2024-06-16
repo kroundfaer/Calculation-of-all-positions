@@ -120,19 +120,6 @@ function displayResults(results) {
         cellValue.textContent = results[key];
     }
 }
-
-function takeScreenshot() {
-    html2canvas(document.body).then(function(canvas) {
-        // Создание изображения
-        var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-        
-        // Создание ссылки для скачивания
-        var link = document.createElement('a');
-        link.download = 'screenshot.png';
-        link.href = image;
-        link.click();
-    });
-}
 </script>
 </head>
 <body>
@@ -143,7 +130,6 @@ function takeScreenshot() {
     <input type="number" id="p2" placeholder="Месяц">
     <input type="number" id="p3" placeholder="Год">
     <button onclick="calculateParameters()">Рассчитать</button>
-    <button onclick="takeScreenshot()">Сделать скриншот</button>
     <table id="resultsTable" class="results-table" style="display: none;">
         <thead>
             <tr>

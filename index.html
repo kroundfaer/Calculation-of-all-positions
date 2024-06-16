@@ -8,7 +8,8 @@
 <script>
 function normalize(value) {
     return value % 22;
-}    
+}
+
 function sumDigits(number) {
     number = Math.abs(number);
     var sum = 0;
@@ -20,6 +21,7 @@ function sumDigits(number) {
 }
 
 function calculateParameters() {
+    // Получение значений из полей ввода
     var p1 = parseInt(document.getElementById('p1').value, 10) || 22;
     var p2 = parseInt(document.getElementById('p2').value, 10) || 22;
     var p3 = parseInt(document.getElementById('p3').value, 10) || 22;
@@ -28,47 +30,47 @@ function calculateParameters() {
     var sumOfDigitsP3 = sumDigits(p3);
 
     // Расчет промежуточных параметров
-    var p1 = Math.abs(normalize(p1));
-    var p2 = Math.abs(normalize(p2));
-    var sumOfDigitsP3 = Math.abs(normalize(sumOfDigitsP3));
-    var p4 = Math.abs(normalize(p1 + p2));
-    var p5 = Math.abs(normalize(p2 + sumOfDigitsP3));
+    var normalizedP1 = Math.abs(normalize(p1));
+    var normalizedP2 = Math.abs(normalize(p2));
+    var normalizedSumOfDigitsP3 = Math.abs(normalize(sumOfDigitsP3));
+    var p4 = Math.abs(normalize(normalizedP1 + normalizedP2));
+    var p5 = Math.abs(normalize(normalizedP2 + normalizedSumOfDigitsP3));
     var p6 = Math.abs(normalize(p4 + p5));
-    var p9 = Math.abs(p1 - p2);
-    var p10 = Math.abs(p2 - sumOfDigitsP3);
+    var p9 = Math.abs(normalizedP1 - normalizedP2);
+    var p10 = Math.abs(normalizedP2 - normalizedSumOfDigitsP3);
     var p11 = Math.abs(p9 - p10);
-    var p7 = Math.abs(normalize(p1 + p5)); // Используем сумму цифр p3
-    var p8 = Math.abs(normalize(p2 + p6));
+    var p7 = Math.abs(normalize(normalizedP1 + p5)); // Используем сумму цифр p3
+    var p8 = Math.abs(normalize(normalizedP2 + p6));
     var p12 = Math.abs(normalize(p7 + p8));
     var p30 = Math.abs(normalize(p12 * 2));
-    var p13 = Math.abs(normalize(p1 + p4 + p6));
-    var p14 = Math.abs(normalize(sumOfDigitsP3 + p5 + p6));
-    var A = Math.abs(normalize(p1 + p4));
-    var B = Math.abs(normalize(p2 + p4));
-    var C = Math.abs(normalize(p2 + p5));
-    var D = Math.abs(normalize(sumOfDigitsP3 + p5));
+    var p13 = Math.abs(normalize(normalizedP1 + p4 + p6));
+    var p14 = Math.abs(normalize(normalizedSumOfDigitsP3 + p5 + p6));
+    var A = Math.abs(normalize(normalizedP1 + p4));
+    var B = Math.abs(normalize(normalizedP2 + p4));
+    var C = Math.abs(normalize(normalizedP2 + p5));
+    var D = Math.abs(normalize(normalizedSumOfDigitsP3 + p5));
     var E = Math.abs(normalize(p4 + p6));
     var F = Math.abs(normalize(p5 + p6));
     var H = Math.abs(normalize(A + E));
     var G1 = Math.abs(normalize(C + D));
     var G2 = Math.abs(normalize(B + F));
     var I = Math.abs(normalize(G1 + G2));
-    var J = Math.abs(normalize(p2 + p8));
+    var J = Math.abs(normalize(normalizedP2 + p8));
     var p15 = Math.abs(normalize(p9 + p10 + p11 - p7));
-    var p16 = Math.abs(normalize((p1 + p4) + (sumOfDigitsP3 + p5)));
+    var p16 = Math.abs(normalize((normalizedP1 + p4) + (normalizedSumOfDigitsP3 + p5)));
     var p17 = Math.abs(normalize(p11 + p6));
     var p18 = Math.abs(normalize(p11 + p8));
     var p19 = Math.abs(normalize(p4 + p6));
     var p20 = Math.abs(normalize(p5 + p6));
-    var p21 = Math.abs(normalize(p1 + p2 + sumOfDigitsP3 + p4 + p5 + p6));
+    var p21 = Math.abs(normalize(normalizedP1 + normalizedP2 + normalizedSumOfDigitsP3 + p4 + p5 + p6));
     var p32 = Math.abs(A - p10);
     // ... Продолжение расчетов
 
     // Вывод результатов в таблицу
     displayResults({
-        '1п': p1,
-        '2п': p2,
-        '3п': sumOfDigitsP3,
+        '1п': normalizedP1,
+        '2п': normalizedP2,
+        '3п': normalizedSumOfDigitsP3,
         '4п': p4,
         '5п': p5,
         '6п': p6,
@@ -105,7 +107,9 @@ function calculateParameters() {
 }
 
 function displayResults(results) {
-    var resultsBody = document.getElementById('results');
+    var resultsTable = document.getElementById('resultsTable');
+    resultsTable.style.display = 'table'; // Показываем таблицу
+    var resultsBody = resultsTable.getElementsByTagName('tbody')[0];
     resultsBody.innerHTML = ''; // Очищаем предыдущие результаты
 
     for (var key in results) {
@@ -115,6 +119,19 @@ function displayResults(results) {
         cellParam.textContent = key;
         cellValue.textContent = results[key];
     }
+}
+
+function takeScreenshot() {
+    html2canvas(document.body).then(function(canvas) {
+        // Создание изображения
+        var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        
+        // Создание ссылки для скачивания
+        var link = document.createElement('a');
+        link.download = 'screenshot.png';
+        link.href = image;
+        link.click();
+    });
 }
 </script>
 </head>
@@ -126,14 +143,15 @@ function displayResults(results) {
     <input type="number" id="p2" placeholder="Месяц">
     <input type="number" id="p3" placeholder="Год">
     <button onclick="calculateParameters()">Рассчитать</button>
-    <table class="results-table">
+    <button onclick="takeScreenshot()">Сделать скриншот</button>
+    <table id="resultsTable" class="results-table" style="display: none;">
         <thead>
             <tr>
                 <th>Параметр</th>
                 <th>Значение</th>
             </tr>
         </thead>
-        <tbody id="results">
+        <tbody>
             <!-- Результаты будут добавлены здесь -->
         </tbody>
     </table>

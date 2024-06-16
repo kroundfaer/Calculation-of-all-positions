@@ -6,11 +6,9 @@
 <link href="style.css" rel="stylesheet" type="text/css">
 <title>Расчет всех позиций</title>
 <script>
-function normalize(n) {
-    n = n % 22; // Получаем остаток от деления на 22
-    return n === 0 ? 22 : n; // Если результат равен 0, заменяем его на 22
-}
-
+function normalize(value) {
+    return value % 22;
+}    
 function sumDigits(number) {
     number = Math.abs(number);
     var sum = 0;
@@ -30,36 +28,39 @@ function calculateParameters() {
     var sumOfDigitsP3 = sumDigits(p3);
 
     // Расчет промежуточных параметров
-    var p4 = normalize(p1 + p2);
-    var p5 = normalize(p2 + sumOfDigitsP3);
-    var p6 = normalize(p4 + p5);
+    var p1 = Math.abs(normalize(p1));
+    var p2 = Math.abs(normalize(p2));
+    var sumOfDigitsP3 = Math.abs(normalize(sumOfDigitsP3));
+    var p4 = Math.abs(normalize(p1 + p2));
+    var p5 = Math.abs(normalize(p2 + sumOfDigitsP3));
+    var p6 = Math.abs(normalize(p4 + p5));
     var p9 = Math.abs(p1 - p2);
     var p10 = Math.abs(p2 - sumOfDigitsP3);
     var p11 = Math.abs(p9 - p10);
-    var p7 = normalize(p1 + p5); // Используем сумму цифр p3
-    var p8 = normalize(p2 + p6);
-    var p12 = normalize(p7 + p8);
-    var p30 = normalize(p12 * 2);
-    var p13 = normalize(p1 + p4 + p6);
-    var p14 = normalize(sumOfDigitsP3 + p5 + p6);
-    var A = normalize(p1 + p4);
-    var B = normalize(p2 + p4);
-    var C = normalize(p2 + p5);
-    var D = normalize(sumOfDigitsP3 + p5);
-    var E = normalize(p4 + p6);
-    var F = normalize(p5 + p6);
-    var H = normalize(A + E);
-    var G1 = normalize(C + D);
-    var G2 = normalize(B + F);
-    var I = normalize(G1 + G2);
-    var J = normalize(p2 + p8);
-    var p15 = normalize(p9 + p10 + p11 - p7);
-    var p16 = normalize((p1 + p4) + (sumOfDigitsP3 + p5));
-    var p17 = normalize(p11 + p6);
-    var p18 = normalize(p11 + p8);
-    var p19 = normalize(p4 + p6);
-    var p20 = normalize(p5 + p6);
-    var p21 = normalize(p1 + p2 + sumOfDigitsP3 + p4 + p5 + p6);
+    var p7 = Math.abs(normalize(p1 + p5)); // Используем сумму цифр p3
+    var p8 = Math.abs(normalize(p2 + p6));
+    var p12 = Math.abs(normalize(p7 + p8));
+    var p30 = Math.abs(normalize(p12 * 2));
+    var p13 = Math.abs(normalize(p1 + p4 + p6));
+    var p14 = Math.abs(normalize(sumOfDigitsP3 + p5 + p6));
+    var A = Math.abs(normalize(p1 + p4));
+    var B = Math.abs(normalize(p2 + p4));
+    var C = Math.abs(normalize(p2 + p5));
+    var D = Math.abs(normalize(sumOfDigitsP3 + p5));
+    var E = Math.abs(normalize(p4 + p6));
+    var F = Math.abs(normalize(p5 + p6));
+    var H = Math.abs(normalize(A + E));
+    var G1 = Math.abs(normalize(C + D));
+    var G2 = Math.abs(normalize(B + F));
+    var I = Math.abs(normalize(G1 + G2));
+    var J = Math.abs(normalize(p2 + p8));
+    var p15 = Math.abs(normalize(p9 + p10 + p11 - p7));
+    var p16 = Math.abs(normalize((p1 + p4) + (sumOfDigitsP3 + p5)));
+    var p17 = Math.abs(normalize(p11 + p6));
+    var p18 = Math.abs(normalize(p11 + p8));
+    var p19 = Math.abs(normalize(p4 + p6));
+    var p20 = Math.abs(normalize(p5 + p6));
+    var p21 = Math.abs(normalize(p1 + p2 + sumOfDigitsP3 + p4 + p5 + p6));
     var p32 = Math.abs(A - p10);
     // ... Продолжение расчетов
 

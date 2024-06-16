@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>Расчет всех позиций</title>
+<script>
+function normalize(n) {
+    n = n % 22; // Получаем остаток от деления на 22
+    return n === 0 ? 22 : n; // Если результат равен 0, заменяем его на 22
+}
+
+function sumDigits(number) {
+    number = Math.abs(number);
+    var sum = 0;
+    while (number) {
+        sum += number % 10;
+        number = Math.floor(number / 10);
+    }
+    return sum === 0 ? 22 : sum;
+}
+
+function calculateParameters() {
+    var p1 = parseInt(document.getElementById('p1').value, 10) || 22;
+    var p2 = parseInt(document.getElementById('p2').value, 10) || 22;
+    var p3 = parseInt(document.getElementById('p3').value, 10) || 22;
+
+    // Разбиваем число p3 на цифры и складываем их
+    var sumOfDigitsP3 = sumDigits(p3);
+
+    // Расчет промежуточных параметров
+    var p4 = normalize(p1 + p2);
+    var p5 = normalize(p2 + sumOfDigitsP3);
+    var p6 = normalize(p4 + p5);
+    var p9 = Math.abs(p1 - p2);
+    var p10 = Math.abs(p2 - sumOfDigitsP3);
+    var p11 = Math.abs(p9 - p10);
+    var p7 = normalize(p1 + p5); // Используем сумму цифр p3
+    var p8 = normalize(p2 + p6);
+    var p12 = normalize(p7 + p8);
+    var p30 = normalize(p12 * 2);
+    var p13 = normalize(p1 + p4 + p6);
+    var p14 = normalize(sumOfDigitsP3 + p5 + p6);
+    var A = normalize(p1 + p4);
+    var B = normalize(p2 + p4);
+    var C = normalize(p2 + p5);
+    var D = normalize(sumOfDigitsP3 + p5);
+    var E = normalize(p4 + p6);
+    var F = normalize(p5 + p6);
+    var H = normalize(A + E);
+    var G1 = normalize(C + D);
+    var G2 = normalize(B + F);
+    var I = normalize(G1 + G2);
+    var J = normalize(p2 + p8);
+    var p15 = normalize(p9 + p10 + p11 - p7);
+    var p16 = normalize((p1 + p4) + (sumOfDigitsP3 + p5));
+    var p17 = normalize(p11 + p6);
+    var p18 = normalize(p11 + p8);
+    var p19 = normalize(p4 + p6);
+    var p20 = normalize(p5 + p6);
+    var p21 = normalize(p1 + p2 + sumOfDigitsP3 + p4 + p5 + p6);
+    var p32 = Math.abs(A - p10);
+    // ... Продолжение расчетов
+
+    // Вывод результатов в таблицу
+    displayResults({
+        '1п': p1,
+        '2п': p2,
+        '3п': sumOfDigitsP3,
+        '4п': p4,
+        '5п': p5,
+        '6п': p6,
+        '7п': p7,
+        '8п': p8,
+        '9п': p9,
+        '10п': p10,
+        '11п': p11,
+        '12п': p12,
+        '30п': p30,
+        '13п': p13,
+        '14п': p14,
+        'A': A,
+        'B': B,
+        'C': C,
+        'D': D,
+        'E': E,
+        'F': F,
+        'H': H,
+        'I': I,
+        'G1': G1,
+        'G2': G2,
+        'J': J,
+        '15п': p15,
+        '16п': p16,
+        '17п': p17,
+        '18п': p18,
+        '19п': p19,
+        '20п': p20,
+        '21п': p21,
+        '32п': p32,
+        // ... другие результаты
+    });
+}
+
+function displayResults(results) {
+    var resultsBody = document.getElementById('results');
+    resultsBody.innerHTML = ''; // Очищаем предыдущие результаты
+
+    for (var key in results) {
+        var row = resultsBody.insertRow();
+        var cellParam = row.insertCell(0);
+        var cellValue = row.insertCell(1);
+        cellParam.textContent = key;
+        cellValue.textContent = results[key];
+    }
+}
+</script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Расчет всех позиций</h1>
+    <input type="number" id="p1" placeholder="День">
+    <input type="number" id="p2" placeholder="Месяц">
+    <input type="number" id="p3" placeholder="Год">
+    <button onclick="calculateParameters()">Рассчитать</button>
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th>Параметр</th>
+                <th>Значение</th>
+            </tr>
+        </thead>
+        <tbody id="results">
+            <!-- Результаты будут добавлены здесь -->
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

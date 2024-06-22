@@ -1,91 +1,191 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: #D8E6EF;
-    color: #384B52;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 100vh;
+body {
+  font-family: Arial, Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+  padding-top: 10px; /* Уменьшено с 50px до 10px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+}
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
 }
 
-.container {
-    width: 90%;
-    max-width: 320px;
-    margin: auto;
-    padding: 50px;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
+
+#calculateButton {
+  margin-top: 20px;
 }
 
-input[type="number"], input[type="date"], button {
-    width: 100%; /* Полная ширина контейнера */
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #384B52; /* Измененный контур для всех элементов ввода */
-    border-radius: 10px;
-    font-size: 16px;
-    background-color: #fff; /* Фоновый цвет */
-    color: #384B52; /* Цвет текста */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4a69bd;
+  font-size: 2rem;
+  width: 80%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Добавляет тень к тексту */
+  letter-spacing: 1.2px; /* Увеличивает расстояние между буквами */
+  font-weight: bold; /* Делает текст более жирным */
+  display: inline-block; /* Делает заголовок встроенным */
 }
 
-input[type="date"]:focus, input[type="number"]:focus {
-    outline: none; /* Убрать стандартный контур */
-    border-color: #F4BC9B; /* Цвет контура при фокусе */
-    box-shadow: 0px 0 0 1px rgba(244, 188, 155, 0.5); /* Тень вокруг элемента */
+.input-group {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #4a69bd;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #78e08f;
+  outline: none;
+}
+
+#footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.button1 {
+  align-items: center;
+  width: 100%;
+  max-width: 700px;
+  padding: 12px;
+  background-color: #4a69bd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button1:hover {
+  background-color: #78e08f;
+}
+
+
 
 button {
-    background-color: #384B52;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 320px;
+  padding: 12px;
+  background-color: #4a69bd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #F4BC9B;
+  background-color: #78e08f;
 }
 
-.results-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.tarot-layout {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.results-table th, .results-table td {
-    padding: 8px;
-    border: 1px solid #e1e8f0;
-    background: #fff;
+.tarot-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
-.results-table th {
-    background-color: #f2f2f2;
+.tarot-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.3s;
+  margin: 10px;
+  flex: 0 1 calc(25% - 20px);
 }
 
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-    }
-
-    input[type="number"], input[type="date"], button {
-        font-size: 18px;
-    }
+.tarot-card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transform: translateY(-5px);
 }
 
-@media (max-width: 480px) {
-    .container {
-        width: 95%;
-    }
-
-    input[type="number"], input[type="date"], button {
-        font-size: 18px;
-    }
+.tarot-card strong {
+  color: #333;
+  text-align: center;
+  padding: 2rem;
+  
 }
+
+.tarot-image {
+  width: 100%;
+  display: block;
+}
+
+.tarot-description {
+  padding: 1rem;
+  background: #f7f7f7;
+  text-align: center;
+}
+
+.position-description {
+  font-style: italic;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+#result-text {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+#result-links a {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  text-decoration: none;
+  color: white;
+  background-color: #4a69bd;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Добавлено изменение цвета текста */
+}
+
+#result-links a:hover {
+  background-color: #78e08f;
+  color: rgb(167, 37, 37); /* Не нужно менять, так как уже белый */
+}
+
+

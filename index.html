@@ -26,9 +26,9 @@ function calculateParameters() {
 
     var sumOfDigitsP3 = sumDigits(p3);
 
-    var p1 = Math.abs(normalize(p1));
-    var p2 = Math.abs(normalize(p2));
-    var sumOfDigitsP3 = Math.abs(normalize(sumOfDigitsP3));
+    p1 = Math.abs(normalize(p1));
+    p2 = Math.abs(normalize(p2));
+    sumOfDigitsP3 = Math.abs(normalize(sumOfDigitsP3));
     var p4 = Math.abs(normalize(p1 + p2));
     var p5 = Math.abs(normalize(p2 + sumOfDigitsP3));
     var p6 = Math.abs(normalize(p4 + p5));

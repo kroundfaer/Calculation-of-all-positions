@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="style.css" rel="stylesheet" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"></script>
 <title>Расчет всех позиций</title>
 <script>
 function normalize(value) {
@@ -24,10 +25,8 @@ function calculateParameters() {
     var p2 = parseInt(document.getElementById('p2').value, 10) || 22;
     var p3 = parseInt(document.getElementById('p3').value, 10) || 22;
 
-    // Разбиваем число p3 на цифры и складываем их
     var sumOfDigitsP3 = sumDigits(p3);
 
-    // Расчет промежуточных параметров
     var p1 = Math.abs(normalize(p1));
     var p2 = Math.abs(normalize(p2));
     var sumOfDigitsP3 = Math.abs(normalize(sumOfDigitsP3));
@@ -37,7 +36,7 @@ function calculateParameters() {
     var p9 = Math.abs(p1 - p2);
     var p10 = Math.abs(p2 - sumOfDigitsP3);
     var p11 = Math.abs(p9 - p10);
-    var p7 = Math.abs(normalize(p1 + p5)); // Используем сумму цифр p3
+    var p7 = Math.abs(normalize(p1 + p5));
     var p8 = Math.abs(normalize(p2 + p6));
     var p12 = Math.abs(normalize(p7 + p8));
     var p30 = Math.abs(normalize(p12 * 2));
@@ -62,9 +61,7 @@ function calculateParameters() {
     var p20 = Math.abs(normalize(p5 + p6));
     var p21 = Math.abs(normalize(p1 + p2 + sumOfDigitsP3 + p4 + p5 + p6));
     var p32 = Math.abs(A - p10);
-    // ... Продолжение расчетов
 
-    // Вывод результатов в таблицу
     displayResults({
         '1п': p1,
         '2п': p2,
@@ -100,13 +97,14 @@ function calculateParameters() {
         '20п': p20,
         '21п': p21,
         '32п': p32,
-        // ... другие результаты
     });
+
+    colorDuplicates();
 }
 
 function displayResults(results) {
     var resultsBody = document.getElementById('results');
-    resultsBody.innerHTML = ''; // Очищаем предыдущие результаты
+    resultsBody.innerHTML = '';
 
     for (var key in results) {
         var row = resultsBody.insertRow();
@@ -116,6 +114,98 @@ function displayResults(results) {
         cellValue.textContent = results[key];
     }
 }
+
+function colorDuplicates() {
+    var cellValues = document.querySelectorAll('#results td:nth-child(2)');
+    var cellParams = document.querySelectorAll('#results td:nth-child(1)');
+    var valueCounts = {};
+    var valueColors = {};
+    var valuePositions = {};
+
+    // Подсчет количества каждого значения и назначение цветов
+    cellValues.forEach(function(cell, index) {
+        var value = cell.textContent;
+        var param = cellParams[index].textContent;
+        if (valueCounts[value]) {
+            valueCounts[value]++;
+            valuePositions[value].push(param); // Изменено на param вместо index
+        } else {
+            valueCounts[value] = 1;
+            valueColors[value] = randomColor(); // генерация уникального цвета для каждого значения
+            valuePositions[value] = [param]; // Изменено на param вместо index
+        }
+    });
+
+    // Раскраска только дубликатов
+cellValues.forEach(function(cell) {
+    var value = cell.textContent;
+    if (valueCounts[value] > 1) {
+        var bgColor = valueColors[value];
+        cell.style.backgroundColor = bgColor;
+
+        // Проверка яркости цвета фона
+        var r = parseInt(bgColor.slice(1, 3), 16);
+        var g = parseInt(bgColor.slice(3, 5), 16);
+        var b = parseInt(bgColor.slice(5, 7), 16);
+        var brightness = Math.round((r * 299 + g * 587 + b * 114) / 1000);
+
+        // Если цвет фона слишком светлый, установить цвет текста в черный
+        if (brightness > 155) {
+            cell.style.color = 'black';
+        } else {
+            cell.style.color = 'white';
+        }
+
+        cell.style.fontWeight = 'bold'; // установка жирного шрифта
+        cell.style.fontSize = '1.0em'; // увеличение размера шрифта
+    }
+});
+
+    // Отображение дубликатов под таблицей
+    var duplicatesContainer = document.getElementById('duplicates');
+    duplicatesContainer.innerHTML = '';
+    var duplicatesArray = [];
+    for (var value in valueCounts) {
+        if (valueCounts[value] > 1) {
+            duplicatesArray.push({value: value, positions: valuePositions[value]});
+        }
+    }
+
+    // Сортировка дубликатов по значению
+    duplicatesArray.sort(function(a, b) {
+        return a.value - b.value;
+    });
+
+    // Создание таблицы для отображения дубликатов
+    var table = document.createElement('table');
+    var thead = document.createElement('thead');
+    var tbody = document.createElement('tbody');
+    var headerRow = document.createElement('tr');
+    var headerCell1 = document.createElement('th');
+    var headerCell2 = document.createElement('th');
+    headerCell1.textContent = 'Значение';
+    headerCell2.textContent = 'Позиции';
+    headerRow.appendChild(headerCell1);
+    headerRow.appendChild(headerCell2);
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Заполнение таблицы дубликатами
+    duplicatesArray.forEach(function(duplicate) {
+        var row = document.createElement('tr');
+        var cell1 = document.createElement('td');
+        var cell2 = document.createElement('td');
+        cell1.textContent = duplicate.value;
+        cell2.textContent = duplicate.positions.join(', ');
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+        tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
+    duplicatesContainer.appendChild(table);
+}
+
 </script>
 </head>
 <body>
@@ -137,6 +227,9 @@ function displayResults(results) {
             <!-- Результаты будут добавлены здесь -->
         </tbody>
     </table>
+    <div id="duplicates">
+        <!-- Дубликаты будут добавлены здесь -->
+    </div>
 </div>
 
 </body>

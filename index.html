@@ -8,8 +8,10 @@
 <title>Расчет всех позиций</title>
 <script>
 function normalize(value) {
-    return value % 22;
-}    
+    var result = value % 22;
+    return result === 0 ? 22 : result;
+}
+
 function sumDigits(number) {
     number = Math.abs(number);
     var sum = 0;
@@ -27,15 +29,15 @@ function calculateParameters() {
 
     var sumOfDigitsP3 = sumDigits(p3);
 
-    var p1 = Math.abs(normalize(p1));
-    var p2 = Math.abs(normalize(p2));
-    var sumOfDigitsP3 = Math.abs(normalize(sumOfDigitsP3));
+    p1 = Math.abs(normalize(p1));
+    p2 = Math.abs(normalize(p2));
+    sumOfDigitsP3 = Math.abs(normalize(sumOfDigitsP3));
     var p4 = Math.abs(normalize(p1 + p2));
     var p5 = Math.abs(normalize(p2 + sumOfDigitsP3));
     var p6 = Math.abs(normalize(p4 + p5));
-    var p9 = Math.abs(p1 - p2);
-    var p10 = Math.abs(p2 - sumOfDigitsP3);
-    var p11 = Math.abs(p9 - p10);
+    var p9 = Math.abs(p1 - p2) || 22;
+    var p10 = Math.abs(p2 - sumOfDigitsP3) || 22;
+    var p11 = Math.abs(p9 - p10) || 22;
     var p7 = Math.abs(normalize(p1 + p5));
     var p8 = Math.abs(normalize(p2 + p6));
     var p12 = Math.abs(normalize(p7 + p8));
@@ -54,13 +56,21 @@ function calculateParameters() {
     var I = Math.abs(normalize(G1 + G2));
     var J = Math.abs(normalize(p2 + p8));
     var p15 = Math.abs(normalize(p9 + p10 + p11 - p7));
+    var p15B = Math.abs(normalize(p9 + p10 + p11));
     var p16 = Math.abs(normalize((p1 + p4) + (sumOfDigitsP3 + p5)));
     var p17 = Math.abs(normalize(p11 + p6));
     var p18 = Math.abs(normalize(p11 + p8));
     var p19 = Math.abs(normalize(p4 + p6));
     var p20 = Math.abs(normalize(p5 + p6));
     var p21 = Math.abs(normalize(p1 + p2 + sumOfDigitsP3 + p4 + p5 + p6));
-    var p32 = Math.abs(A - p10);
+    var p32 = Math.abs(normalize(A - p10));
+
+    // Обработчик для добавления 22, если результат равен 0
+    var results = [p1, p2, sumOfDigitsP3, p4, p5, p6, p9, p10, p11, p7, p8, p12, p30, p13, p14, A, B, C, D, E, F, H, G1, G2, I, J, p15, p15B, p16, p17, p18, p19, p20, p21, p32];
+    results = results.map(result => result === 0 ? 22 : result);
+
+    // Присваивание обработанных значений обратно переменным
+    [p1, p2, sumOfDigitsP3, p4, p5, p6, p9, p10, p11, p7, p8, p12, p30, p13, p14, A, B, C, D, E, F, H, G1, G2, I, J, p15, p15B, p16, p17, p18, p19, p20, p21, p32] = results;
 
     displayResults({
         '1п': p1,
@@ -90,6 +100,7 @@ function calculateParameters() {
         'G2': G2,
         'J': J,
         '15п': p15,
+        '15пB': p15B,
         '16п': p16,
         '17п': p17,
         '18п': p18,
